@@ -1,10 +1,9 @@
-
 const Profile = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <>
+      <p>This is the profile page</p>
+    </>
+  );
+};
 
-export default Profile
+export default Profile;
