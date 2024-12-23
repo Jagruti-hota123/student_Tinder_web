@@ -16,6 +16,7 @@ const Navbar = () => {
       navigate("/login");
     } catch (error) {
       console.error(error);
+      
     }
   };
 
@@ -63,7 +64,7 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/settings">Settings</Link>
+                <Link to="/connections">Connections</Link>
               </li>
               <li>
                 <button onClick={handleLogout} className="text-left">

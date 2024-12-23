@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
-  const [emailId, setEmailId] = useState("karan123@gmail.com");
-  const [password, setPassword] = useState("Karan@123");
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,7 +19,6 @@ const Login = () => {
         { emailId, password },
         { withCredentials: true }
       );
-      console.log(data.data);
       dispatch(addUser(data.data));
       navigate("/");
     } catch (error) {
@@ -28,7 +27,7 @@ const Login = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+    <div className="flex justify-center items-center h-[80vh] bg-gray-100 p-4">
       <div className="bg-white shadow-lg rounded-lg w-full max-w-md p-6">
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
           Login
