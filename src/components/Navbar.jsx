@@ -16,6 +16,7 @@ const Navbar = () => {
       navigate("/login");
     } catch (error) {
       console.error(error);
+      
     }
   };
 

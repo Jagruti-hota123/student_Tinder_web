@@ -42,7 +42,12 @@ const UserCard = ({ user }) => {
             >
               Ignore
             </button>
-            <button className="btn btn-secondary" onClick={() => handleRequest("interested", _id)}>Interested</button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => handleRequest("interested", _id)}
+            >
+              Interested
+            </button>
           </div>
         </div>
       </div>
