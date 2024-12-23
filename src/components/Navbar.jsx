@@ -16,7 +16,6 @@ const Navbar = () => {
       navigate("/login");
     } catch (error) {
       console.error(error);
-      
     }
   };
 
@@ -31,48 +30,53 @@ const Navbar = () => {
 
       {/* Profile Section */}
       {user && (
-        <div className="flex-none gap-2">
-          <div className="dropdown dropdown-end">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar"
-            >
-              <div className="flex items-center gap-2">
-                <p className="hidden md:block text-sm font-semibold">
-                  Welcome, {user?.name}
-                </p>
-                <div className="w-10 h-10 rounded-full">
-                  <img
-                    alt="Profile"
-                    src={user?.photoUrl || "/placeholder-profile.png"}
-                    className="rounded-full"
-                  />
+        <div className="flex gap-2">
+          <p className="hidden md:block text-sm font-semibold lg:flex lg:flex-row lg:gap-2 lg:items-center lg:justify-center">
+            Welcome, {user?.firstName}
+            <div className="flex-none gap-2">
+              <div className="dropdown dropdown-end">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn btn-ghost btn-circle avatar"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 rounded-full">
+                      <img
+                        alt="Profile"
+                        src={user?.photoUrl || "/placeholder-profile.png"}
+                        className="rounded-full"
+                      />
+                    </div>
+                  </div>
                 </div>
+
+                {/* Dropdown Menu */}
+                <ul
+                  tabIndex={0}
+                  className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow-lg"
+                >
+                  <li>
+                    <Link to="/profile" className="justify-between">
+                      Profile
+                      <span className="badge">New</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/connections">Connections</Link>
+                  </li>
+                  <li>
+                    <Link to="/requests"> Requests</Link>
+                  </li>
+                  <li>
+                    <button onClick={handleLogout} className="text-left">
+                      Logout
+                    </button>
+                  </li>
+                </ul>
               </div>
             </div>
-
-            {/* Dropdown Menu */}
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow-lg"
-            >
-              <li>
-                <Link to="/profile" className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/connections">Connections</Link>
-              </li>
-              <li>
-                <button onClick={handleLogout} className="text-left">
-                  Logout
-                </button>
-              </li>
-            </ul>
-          </div>
+          </p>
         </div>
       )}
     </div>

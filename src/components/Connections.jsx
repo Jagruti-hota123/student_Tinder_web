@@ -40,12 +40,12 @@ const Connections = () => {
         Connections
       </h1>
       <div className="flex flex-col gap-6">
-        {connections.map((connection, index) => {
-          const { firstName, lastName, photoUrl, age, gender, about } =
+        {connections.map((connection) => {
+          const { _id, firstName, lastName, photoUrl, age, gender, about } =
             connection;
           return (
             <div
-              key={index}
+              key={_id}
               className="flex items-center gap-4 bg-white p-6 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow"
             >
               <img

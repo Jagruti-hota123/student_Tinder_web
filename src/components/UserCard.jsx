@@ -1,7 +1,25 @@
 /* eslint-disable react/prop-types */
+
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { removeUserFeed } from "../utils/feedSlice";
 // eslint-disable-next-line react/prop-types
 const UserCard = ({ user }) => {
-  const { firstName, lastName, age, about, gender, photoUrl } = user;
+  const { _id, firstName, lastName, age, about, gender, photoUrl } = user;
+  const dispatch = useDispatch();
+  const handleRequest = async (status, userId) => {
+    try {
+      const res = await axios.post(
+        BASE_URL + "/request/send/" + status + "/" + userId,
+        {},
+        { withCredentials: true }
+      );
+      dispatch(removeUserFeed(userId));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
@@ -18,8 +36,13 @@ const UserCard = ({ user }) => {
             </p>
           )}
           <div className="card-actions justify-center">
-            <button className="btn btn-primary">Ignore</button>
-            <button className="btn btn-secondary">Interested</button>
+            <button
+              className="btn btn-primary"
+              onClick={() => handleRequest("ignored", _id)}
+            >
+              Ignore
+            </button>
+            <button className="btn btn-secondary" onClick={() => handleRequest("interested", _id)}>Interested</button>
           </div>
         </div>
       </div>

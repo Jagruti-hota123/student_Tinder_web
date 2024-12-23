@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
 import UserCard from "./UserCard";
+import axios from "axios";
 
 const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user?.firstName || "");
@@ -16,9 +16,10 @@ const EditProfile = ({ user }) => {
   const [photoUrl, setPhotoUrl] = useState(user?.photoUrl || "");
   const dispatch = useDispatch();
 
-  async function handleSave() {
+  const handleSave = async () => {
     try {
-      const res = await axios.patch(
+      console.log("entered try");
+      const res = await axios.put(
         BASE_URL + "/profile/edit",
         { firstName, lastName, age, gender, about, photoUrl },
         { withCredentials: true }
@@ -26,10 +27,10 @@ const EditProfile = ({ user }) => {
       console.log(res.data);
       dispatch(addUser(res?.data?.data));
     } catch (error) {
-      //   setError(error?.response?.data?.msg || "An error occurred.");
+      setError(error?.message || "An error occurred.");
       console.error(error);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col md:flex-row justify-center items-center gap-4">
@@ -69,7 +70,7 @@ const EditProfile = ({ user }) => {
               value={age}
               onChange={(e) => setAge(e.target.value)}
             />
-            <label htmlFor="gender" className="text-gray-600 form-control  ">
+            <label htmlFor="gender" className="text-gray-600 form-control">
               Gender:-
             </label>
             <select
