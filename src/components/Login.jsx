@@ -144,7 +144,7 @@ const Login = () => {
         </div>
 
         <div className="mt-4 text-center text-sm text-gray-600">
-          <p>
+          <div>
             {!isLoginForm
               ? "Already have an account? "
               : "Don't have an account? "}
@@ -155,7 +155,7 @@ const Login = () => {
             >
               {isLoginForm ? "Sign Up" : "Login"}
             </button>
-          </p>
+          </div>
         </div>
       </div>
     </div>

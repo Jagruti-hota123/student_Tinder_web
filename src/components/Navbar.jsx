@@ -16,7 +16,6 @@ const Navbar = () => {
       navigate("/login");
     } catch (error) {
       console.error(error);
-      
     }
   };
 
@@ -32,7 +31,7 @@ const Navbar = () => {
       {/* Profile Section */}
       {user && (
         <div className="flex gap-2">
-          <p className="hidden md:block text-sm font-semibold lg:flex lg:flex-row lg:gap-2 lg:items-center lg:justify-center">
+          <div className="hidden md:block text-sm font-semibold lg:flex lg:flex-row lg:gap-2 lg:items-center lg:justify-center">
             Welcome, {user?.firstName}
             <div className="flex-none gap-2">
               <div className="dropdown dropdown-end">
@@ -77,7 +76,7 @@ const Navbar = () => {
                 </ul>
               </div>
             </div>
-          </p>
+          </div>
         </div>
       )}
     </div>
