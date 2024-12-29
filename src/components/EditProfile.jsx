@@ -18,16 +18,30 @@ const EditProfile = ({ user }) => {
 
   const handleSave = async () => {
     try {
-      console.log("entered try");
+      // Fetch the token from localStorage
+      const token = localStorage.getItem("token");
+
+      // Check if the token is valid
+      if (!token || token.split(".").length !== 3) {
+        setError("Invalid or missing token.");
+        return;
+      }
+
+      // Send the PUT request to update the profile
       const res = await axios.put(
         BASE_URL + "/profile/edit",
         { firstName, lastName, age, gender, about, photoUrl },
-        { withCredentials: true }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      console.log(res.data);
-      dispatch(addUser(res?.data?.data));
+
+      console.log(res.data); // Log the response from the server
+      dispatch(addUser(res?.data?.data)); // Update user data in Redux
     } catch (error) {
-      setError(error?.message || "An error occurred.");
+      setError(error?.response?.data?.msg || "An error occurred.");
       console.error(error);
     }
   };
@@ -50,7 +64,7 @@ const EditProfile = ({ user }) => {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
-            <label htmlFor="lastName" className="text-gray-600  form-control">
+            <label htmlFor="lastName" className="text-gray-600 form-control">
               Lastname:-
             </label>
             <input

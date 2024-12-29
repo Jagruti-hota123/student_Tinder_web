@@ -14,7 +14,9 @@ const Body = () => {
     try {
       if (userData) return;
       const res = await axios.get(BASE_URL + "/profile/view", {
-        withCredentials: true,
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
       });
 
       dispatch(addUser(res.data));

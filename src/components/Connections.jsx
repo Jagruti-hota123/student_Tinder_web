@@ -11,9 +11,10 @@ const Connections = () => {
   const fetchConnections = async () => {
     try {
       const res = await axios.get(BASE_URL + "/user/connections", {
-        withCredentials: true,
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
       });
-      console.log(res);
       dispatch(addConnections(res.data.data));
     } catch (error) {
       console.error(error);

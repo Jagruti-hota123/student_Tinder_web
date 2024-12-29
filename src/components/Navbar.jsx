@@ -11,11 +11,28 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
-      dispatch(removeUser());
-      navigate("/login");
+      // Add token for the logout request if present
+      const token = localStorage.getItem("token");
+      if (token) {
+        await axios.post(
+          BASE_URL + "/logout",
+          {},
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+      }
+
+      // Remove token from localStorage and dispatch the removeUser action
+      localStorage.removeItem("token");
+      dispatch(removeUser()); // Clear user state in Redux
+      setTimeout(() => {
+        navigate("/login"); // Navigate to the login page after clearing user state
+      }, 500); // Small delay to ensure state updates properly
     } catch (error) {
-      console.error(error);
+      console.error("Logout error:", error);
     }
   };
 

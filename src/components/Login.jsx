@@ -1,11 +1,13 @@
+/* eslint-disable react/prop-types */
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
+// import Cookies from "js-cookie";
 
-const Login = () => {
+const Login = ({ setHasRefreshToken, hasRefreshToken }) => {
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -14,30 +16,54 @@ const Login = () => {
   const [isLoginForm, setIsLoginForm] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  useEffect(() => {
+    if (hasRefreshToken) navigate("/feed");
+  });
 
-  async function handleSubmit() {
+  async function handleSubmit(event) {
     try {
-      const data = await axios.post(
-        BASE_URL + "/login",
-        { emailId, password },
-        { withCredentials: true }
-      );
-      dispatch(addUser(data.data));
-      navigate("/");
+      event.preventDefault();
+      const response = await axios.post(BASE_URL + "/login", {
+        emailId,
+        password,
+      });
+      const token = response?.data?.token;
+      if (token) {
+        localStorage.setItem("token", token);
+        setHasRefreshToken(true);
+      }
+      if (response.status === 200) {
+        console.log("response", response);
+
+        dispatch(addUser(response.data.data));
+        navigate("/feed");
+      }
+      console.log(token);
     } catch (error) {
       setError(error?.response?.data?.msg || "An error occurred.");
     }
   }
 
-  async function handleSignup() {
+  async function handleSignup(event) {
     try {
-      const data = await axios.post(
-        BASE_URL + "/signup",
-        { emailId, password, firstName, lastName },
-        { withCredentials: true }
-      );
-      dispatch(addUser(data.data));
-      navigate("/profile");
+      event.preventDefault();
+      const response = await axios.post(BASE_URL + "/signup", {
+        emailId,
+        password,
+        firstName,
+        lastName,
+      });
+
+      const token = response?.data?.token;
+      if (token) {
+        localStorage.setItem("token", token);
+        setHasRefreshToken(true);
+      }
+
+      if (response.status === 200) {
+        dispatch(addUser(response.data.data));
+        navigate("/profile");
+      }
     } catch (error) {
       setError(error?.response?.data?.msg || "An error occurred.");
     }
@@ -49,7 +75,10 @@ const Login = () => {
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
           {isLoginForm ? "Login" : "Sign Up"}
         </h2>
-        <div className="space-y-4">
+        <form
+          className="space-y-4"
+          onSubmit={isLoginForm ? handleSubmit : handleSignup}
+        >
           {!isLoginForm && (
             <>
               {" "}
@@ -132,16 +161,16 @@ const Login = () => {
 
           {/* Error Message */}
           {error && <p className="text-red-500 text-sm">{error}</p>}
-        </div>
-
-        <div className="mt-6">
-          <button
-            onClick={isLoginForm ? handleSubmit : handleSignup}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-          >
-            {isLoginForm ? "Login" : "Sign Up"}
-          </button>
-        </div>
+          <div className="mt-6">
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              onClick={isLoginForm ? handleSubmit : handleSignup}
+            >
+              {isLoginForm ? "Login" : "Sign Up"}
+            </button>
+          </div>
+        </form>
 
         <div className="mt-4 text-center text-sm text-gray-600">
           <div>

@@ -15,7 +15,9 @@ const Requests = () => {
         BASE_URL + "/request/review/" + status + "/" + _id,
         {},
         {
-          withCredentials: true,
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
         }
       );
       dispatch(removeRequest(_id));
